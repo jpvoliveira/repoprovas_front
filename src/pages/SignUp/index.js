@@ -24,8 +24,8 @@ export default function SignUp() {
     const user = { email, password }
 
     try {
-      await api.login(user)
-      navigation('/home')
+      await api.register(user)
+      navigation('/sign-in')
     } catch (error) {
       console.log(error);
       alert("Erro, tente novamente");

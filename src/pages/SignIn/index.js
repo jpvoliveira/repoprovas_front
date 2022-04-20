@@ -1,21 +1,24 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import api from '../../services/api'
 import { Form, Input, StyledLink } from '../../assets/FormComponents'
 import { Box, Container, Button, Line } from './styled'
 import Logo from '../../assets/Logo'
 import { useNavigate } from 'react-router-dom'
+import TokenContext from '../../contexts/tokenContext'
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigate();
+  const {setToken} = useContext(TokenContext)
 
   async function handleSubmit(e) {
     e.preventDefault()
     const user = { email, password }
 
     try {
-      await api.login(user)
+      const {data} = await api.login(user)
+      setToken(data)
       navigation('/home')
     } catch (error) {
       console.log(error);
