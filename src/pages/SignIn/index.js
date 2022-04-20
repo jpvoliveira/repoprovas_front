@@ -28,7 +28,7 @@ export default function SignIn() {
       <Container>
         <Logo />
         <h1>Login</h1>
-        <Button>ENTRAR COM O GITHUB</Button>
+        <Button onClick={()=>alert("Opção indisponivel no momento :(")}>ENTRAR COM O GITHUB</Button>
         <Line></Line>
         <Form onSubmit={handleSubmit}>
           <Input
