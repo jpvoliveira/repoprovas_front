@@ -11,9 +11,14 @@ async function register(user){
   await axios.post(`${BASE_URL}/sign-up`, user)
 }
 
+async function addTest(testData){
+  await axios.post(`${BASE_URL}/add`, testData)
+}
+
 const api = {
   login,
-  register
+  register,
+  addTest
 }
 
 export default api;
