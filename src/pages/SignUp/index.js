@@ -65,7 +65,7 @@ export default function SignUp() {
             required
           />
           <div>
-            <StyledLink to="/sign-in">Já possuo cadastro</StyledLink>
+            <StyledLink to="/">Já possuo cadastro</StyledLink>
             <button type="submit">CADASTRAR</button>
           </div>
         </Form>
