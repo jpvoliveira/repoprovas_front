@@ -25,7 +25,7 @@ export default function SignUp() {
 
     try {
       await api.register(user)
-      navigation('/sign-in')
+      navigation('/')
     } catch (error) {
       console.log(error);
       alert("Erro, tente novamente");

@@ -1,5 +1,3 @@
-import { useContext } from "react"
-import TokenContext from "../../contexts/tokenContext"
 import Logo from '../../assets/Logo'
 import Logout from '../../assets/Logout'
 import styled from 'styled-components'
@@ -9,7 +7,6 @@ import BoxContentCategory from "./BoxContentCategory"
 import BoxContentTeacher from "./BoxContentTeacher"
 
 export default function SignUp() {
-  const { token } = useContext(TokenContext)
   const [ filter, setFilter] = useState("category")
 
   return (

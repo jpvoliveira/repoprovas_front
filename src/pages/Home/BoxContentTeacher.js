@@ -1,65 +1,78 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import ArrowDown from '../../assets/ArrowDown'
 import ArrowUp from '../../assets/ArrowUp'
 import api from '../../services/api'
+import TokenContext from '../../contexts/tokenContext'
+import { useNavigate } from 'react-router-dom'
 
-export default function BoxContentTeacher(){
+export default function BoxContentTeacher() {
   const [list, setList] = useState(undefined)
   const [click, setClick] = useState(true)
+  const { token } = useContext(TokenContext)
+  const navigate = useNavigate();
 
-  useEffect(()=>{
-    const promise =  api.findTeacher()
-    promise.then((res)=>{
+  useEffect(() => {
+    const promise = api.findTeacher(token)
+    promise.then((res) => {
       setList(res.data)
-    })
-  },[])
-  
+    }).catch((error) => {
+      const erro = error.response.data
+      alert(erro)
+      if (erro === 'Voce não esta logado') {
+        navigate('/')
+      }
+    }
+    )
+  }, [token, navigate])
+
   if (!list) {
     return 'Loading...'
   }
   let listTeachers = []
-  console.log(list[0])
+
   for (let i = 0; i < list.length; i++) {
     const element = list[i].teachersDisciplines.teachers.name;
     listTeachers.push(element)
   }
 
-  let newListTeachers = listTeachers.filter(function(el, i) {
+  let newListTeachers = listTeachers.filter(function (el, i) {
     return listTeachers.indexOf(el) === i;
   });
 
-  return(
+  return (
     <>
-    {newListTeachers.map((item)=>{return(
-      <>
-      <Box >
-        <h1>{item}</h1>
-        <div onClick={()=> setClick(!click)}>
-          {click ? <ArrowDown /> : <ArrowUp /> }
-        </div>
-      </Box>
-      {!click && <BoxExtend teacher={item} list={list}/>}
-      </>
-    )})}
+      {newListTeachers.map((item) => {
+        return (
+          <>
+            <Box >
+              <h1>{item}</h1>
+              <div onClick={() => setClick(!click)}>
+                {click ? <ArrowDown /> : <ArrowUp />}
+              </div>
+            </Box>
+            {!click && <BoxExtend teacher={item} list={list} />}
+          </>
+        )
+      })}
     </>
   )
 }
 
-function BoxExtend({teacher, list}){
-  return(
-  <Big>
-  {list.map((item)=>{
-    if(item.teachersDisciplines.teachers.name === teacher){
-      return(
-        <Conteiner>
-          <h1>{item.categories.name}</h1>
-          <h2>{item.name}</h2>
-        </Conteiner>
-      )
-    }
-  })}
-  </Big>
+function BoxExtend({ teacher, list }) {
+  return (
+    <Big>
+      {list.map((item) => {
+        if (item.teachersDisciplines.teachers.name === teacher) {
+          return (
+            <Conteiner>
+              <h1>{item.categories.name}</h1>
+              <h2>{item.name}</h2>
+            </Conteiner>
+          )
+        }
+      })}
+    </Big>
   )
 }
 

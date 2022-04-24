@@ -6,12 +6,19 @@ import Home from "./pages/Home/index"
 import TokenContext from "./contexts/tokenContext";
 
 function App() {
-  const [token, setToken] = useState('')
+  const localToken = localStorage.getItem("auth")
+  const [token, setToken] = useState(localToken)
+
+  function persistToken(token){
+    setToken(token)
+    localStorage.setItem("auth", token)
+  }
+
   return (
-    <TokenContext.Provider value={{ token, setToken }}>
+    <TokenContext.Provider value={{ token, setToken, persistToken }}>
       <BrowserRouter>
         <Routes>
-          <Route path="/sign-in" element={<SignIn />}></Route>
+          <Route path="/" element={<SignIn />}></Route>
           <Route path="/sign-up" element={<SignUp />}></Route>
           <Route path="/home" element={<Home />}></Route>
         </Routes>

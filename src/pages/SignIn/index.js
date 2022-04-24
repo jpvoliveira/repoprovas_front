@@ -10,15 +10,16 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigate();
-  const {setToken} = useContext(TokenContext)
+  const { persistToken } = useContext(TokenContext)
 
   async function handleSubmit(e) {
     e.preventDefault()
     const user = { email, password }
 
     try {
-      const {data} = await api.login(user)
-      setToken(data)
+      const { data } = await api.login(user)
+      // setToken(data)
+      persistToken(data)
       navigation('/home')
     } catch (error) {
       console.log(error);
@@ -31,7 +32,7 @@ export default function SignIn() {
       <Container>
         <Logo />
         <h1>Login</h1>
-        <Button onClick={()=>alert("Opção indisponivel no momento :(")}>ENTRAR COM O GITHUB</Button>
+        <Button onClick={() => alert("Opção indisponivel no momento :(")}>ENTRAR COM O GITHUB</Button>
         <Line></Line>
         <Form onSubmit={handleSubmit}>
           <Input

@@ -1,30 +1,41 @@
 import { Form } from '../../assets/FormComponents'
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import api from '../../services/api'
+import TokenContext from '../../contexts/tokenContext'
+import { useNavigate } from 'react-router-dom'
 
 export default function BoxContentAdd() {
   const [name, setName] = useState('')
-  const [teacher, setTeacher] = useState(0)
+  const [teacher, setTeacher] = useState('')
   const [url, setUrl] = useState('')
-  const [category, setCategory] = useState(0)
+  const [discipline, setDiscipline] = useState('')
+  const [category, setCategory] = useState()
+  const { token } = useContext(TokenContext)
+  const navigate = useNavigate();
 
-  let testData = { name, pdfUrl: url, categoryId: parseInt(category), teacherDisciplineId: parseInt(teacher) }
+  let testData = { name, pdfUrl: url, categoryId: parseInt(category), teacherName: teacher, disciplineName: discipline }
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault()
     console.log(testData)
 
-    try {
-      await api.addTest(testData)
+    const promise =  api.addTest(testData, token)
+    promise.then((res) => {
+      console.log(res)
       setName('')
-      setUrl('') 
+      setUrl('')
       setTeacher('')
-      setCategory('') 
-    } catch (error) {
-      console.log(error);
-      alert("Erro, tente novamente");
+      setCategory('')
+      setDiscipline('')
+    }).catch((error) => {
+      const erro = error.response.data
+      alert(erro)
+      if (erro === 'Voce não esta logado') {
+        navigate('/')
+      }
     }
+    )
   }
 
   return (
@@ -32,21 +43,28 @@ export default function BoxContentAdd() {
       <h1>Insira os dados da prova:</h1>
       <Form onSubmit={handleSubmit}>
         <Input
-          placeholder="Nome"
+          placeholder="Materia"
+          onChange={(e) => setDiscipline(e.target.value)}
+          name="name"
+          value={discipline}
+          required
+        />
+        <Input
+          placeholder="Conteudo da prova"
           onChange={(e) => setName(e.target.value)}
           name="name"
           value={name}
           required
         />
         <Input
-          placeholder="Professor"
+          placeholder="Nome do professor(a)"
           onChange={(e) => setTeacher(e.target.value)}
           name="teacher"
           value={teacher}
           required
         />
         <Input
-          placeholder="Categoria"
+          placeholder="Prova 1, 2 ou 3"
           onChange={(e) => setCategory(e.target.value)}
           name="category"
           value={category}
@@ -82,7 +100,7 @@ const Input = styled.input`
 
 const BoxAdd = styled.div`
   width: 100%;
-  height: 360px;
+  height: 420px;
   background-color: white;
   display: flex;
   align-items: center;
