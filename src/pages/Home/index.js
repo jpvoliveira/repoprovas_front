@@ -5,15 +5,25 @@ import { useState } from "react"
 import BoxContentAdd from "./BoxContentAdd"
 import BoxContentCategory from "./BoxContentCategory"
 import BoxContentTeacher from "./BoxContentTeacher"
+import { useNavigate } from 'react-router-dom'
 
 export default function SignUp() {
   const [ filter, setFilter] = useState("category")
+  const navigate = useNavigate()
+
+  function logout(){
+    localStorage.removeItem('auth')
+    navigate('/')
+    window.location.reload()
+  }
 
   return (
     <>
       <Header>
         <Logo />
-        <Logout />
+        <div onClick={logout}>
+          <Logout />
+        </div>
       </Header>
       <Search>
         <Input placeholder="Pesquisa por disciplina" />
