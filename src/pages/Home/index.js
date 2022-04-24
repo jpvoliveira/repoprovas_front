@@ -8,10 +8,10 @@ import BoxContentTeacher from "./BoxContentTeacher"
 import { useNavigate } from 'react-router-dom'
 
 export default function SignUp() {
-  const [ filter, setFilter] = useState("category")
+  const [filter, setFilter] = useState("category")
   const navigate = useNavigate()
 
-  function logout(){
+  function logout() {
     localStorage.removeItem('auth')
     navigate('/')
     window.location.reload()
@@ -26,19 +26,21 @@ export default function SignUp() {
         </div>
       </Header>
       <Search>
-        <Input placeholder="Pesquisa por disciplina" />
+        {filter === 'category' && <Input placeholder="Pesquisa por disciplina" />}
+        {filter === 'teacher' && <Input placeholder="Pesquisa por professor(a)" />}
+        {filter === 'add' && <FilterAdd></FilterAdd>}
         <Line />
         <FilterBox>
-          <Button onClick={()=>setFilter('category')} className={filter === 'category' && 'select'}>DISCIPLINAS</Button>
-          <Button onClick={()=>setFilter('teacher')} className={filter === 'teacher' ? 'big select' : 'big'}>PESSOA INSTRUTORA</Button>
-          <Button onClick={()=>setFilter('add')} className={filter === 'add' && 'select'}>ADICIONAR</Button>
+          <Button onClick={() => setFilter('category')} className={filter === 'category' && 'select'}>DISCIPLINAS</Button>
+          <Button onClick={() => setFilter('teacher')} className={filter === 'teacher' ? 'big select' : 'big'}>PESSOA INSTRUTORA</Button>
+          <Button onClick={() => setFilter('add')} className={filter === 'add' && 'select'}>ADICIONAR</Button>
         </FilterBox>
       </Search>
       <Contents>
         <Container>
-          { filter === 'category' && <BoxContentCategory/> }
-          { filter === 'teacher' && <BoxContentTeacher/> }
-          { filter === 'add' && <BoxContentAdd/> }
+          {filter === 'category' && <BoxContentCategory />}
+          {filter === 'teacher' && <BoxContentTeacher />}
+          {filter === 'add' && <BoxContentAdd />}
         </Container>
       </Contents>
     </>
@@ -111,6 +113,11 @@ const Input = styled.input`
   padding: 15px 16px;
   border-radius: 5px;
 
+  margin-bottom: 20px;
+`
+const FilterAdd = styled.div`
+  width: 400px;
+  height: 40px;
   margin-bottom: 20px;
 `
 
