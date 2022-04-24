@@ -71,7 +71,10 @@ function BoxExtend({ category, list }) {
               </CategoryBox>
               <Conteiner>
                 <h1>{item.categories.name}</h1>
-                <h2>{item.name}</h2>
+                <div>
+                  <h2>{item.name}</h2>
+                  <p>({item.teachersDisciplines.teachers.name})</p>
+                </div>
               </Conteiner>
             </>
           )
@@ -115,8 +118,17 @@ const Conteiner = styled.div`
   justify-content: space-around;
   padding-left: 50px;
   padding-right: 20px;
-  h2{
+  h1{
+    font-weight: bold;
+  }
+  div{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  p{
     color: grey;
+    font-size: 12px;
   }
 `
 const Big = styled.div`
