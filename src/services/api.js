@@ -15,10 +15,22 @@ async function addTest(testData){
   await axios.post(`${BASE_URL}/add`, testData)
 }
 
+async function findTeacher(){
+  const result = await axios.get(`${BASE_URL}/findtestteacher`)
+  return result
+}
+
+async function findCategory(){
+  const result = await axios.get(`${BASE_URL}/findtestcategory`)
+  return result
+}
+
 const api = {
   login,
   register,
-  addTest
+  addTest,
+  findTeacher,
+  findCategory
 }
 
 export default api;
