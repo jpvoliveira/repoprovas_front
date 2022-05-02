@@ -25,7 +25,7 @@ export default function BoxContentCategory() {
     }
     )
   }
-    , [navigate, token])
+    , [navigate, token, list])
 
   if (!list) {
     return 'Loading...'
@@ -60,6 +60,21 @@ export default function BoxContentCategory() {
 }
 
 function BoxExtend({ category, list }) {
+  const navigate = useNavigate();
+
+  function ContViews(id) {
+    const promise = api.addView(id)
+    promise.then((res) => {
+      console.log(res.data)
+    }).catch((error) => {
+      const erro = error.response.data
+      alert(erro)
+      if (erro === 'Voce não esta logado') {
+        navigate('/')
+      }
+      })
+  }
+
   return (
     <Big>
       {list.map((item) => {
@@ -69,8 +84,11 @@ function BoxExtend({ category, list }) {
               <CategoryBox>
                 <p>{item.teachersDisciplines.disciplines.name}</p>
               </CategoryBox>
-              <Conteiner>
-                <h1>{item.categories.name}</h1>
+              <Conteiner onClick={() => ContViews(item.id)}>
+                <div>
+                  <h1>{item.categories.name}</h1>
+                  <p>Views: {item.views}</p>
+                </div>
                 <div>
                   <h2>{item.name}</h2>
                   <p>({item.teachersDisciplines.teachers.name})</p>

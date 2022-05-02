@@ -33,12 +33,18 @@ async function findCategory(token) {
   return result
 }
 
+async function addView(id) {
+  const result = await axios.post(`${BASE_URL}/addview`, {id})
+  return result
+}
+
 const api = {
   login,
   register,
   addTest,
   findTeacher,
-  findCategory
+  findCategory,
+  addView
 }
 
 export default api;
